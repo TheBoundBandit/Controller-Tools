@@ -1,0 +1,22 @@
+{
+  "name": "controller-tools",
+  "version": "1.0.0",
+  "description": "A set of tools to help use the Discord Controller bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheBoundBandit/Controller-Tools.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheBoundBandit/Controller-Tools/issues"
+  },
+  "homepage": "https://github.com/TheBoundBandit/Controller-Tools#readme",
+  "dependencies": {
+    "chart.js": "^4.1.1"
+  }
+}
