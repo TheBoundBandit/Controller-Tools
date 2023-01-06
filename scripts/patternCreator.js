@@ -19,11 +19,16 @@ data = {
     ]
 }*/
 
-async function generateChart(data){
+async function generateChart(pointData){
     const chartConfig = {
         type: 'line',
         data: data,
         options: {
+            scales: {
+                speed: {
+                    axis: 'y'
+                }
+            },
             elements: {
                 line: {
                     tension: 0.4
