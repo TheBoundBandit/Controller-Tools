@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 export default function PatternCreator() {
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState({
+        primary: '',
+        readOut: ''
+    });
     const [entry, setEntry] = useState([{
         type: 'speed',
         value: '0',
@@ -35,15 +38,14 @@ export default function PatternCreator() {
         index = Number(index);
         let newEntry = entry;
         if (type === 'unit') {
-            newEntry[index].value = unitConversion(entry[index], value, entry[index].value);
+            newEntry[index].value = unitConversion(entry[index].unit, value, entry[index].value);
             newEntry[index].unit = value;
         }
         else {
             newEntry[index] = ({ ...entry[index], value: value });
         }
         setEntry(newEntry);
-        setCode(generateCode());
-        console.log(entry);
+        setCode({...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true)});
     }
 
     function addSegment(event){
@@ -66,17 +68,17 @@ export default function PatternCreator() {
         });
 
         setEntry(newEntry);
-        setCode(generateCode());
+        setCode({...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true)});
     }
 
-    function generateCode() {
+    function generateCode(list, extended=false) {
         let newCode = '';
-        entry.forEach(item => {
+        list.forEach(item => {
             let val = '';
             if (item.type === 'speed') {
                 val = `${item.value}`
                 if (item.unit !== 'int') {
-                    val = unitConversion(item.unit, 'int', item.value);
+                    val = extended ? `${item.value}%` : unitConversion(item.unit, 'int', item.value);
                 }
             }
             else if (item.type === 'duration') {
@@ -96,21 +98,25 @@ export default function PatternCreator() {
     function unitConversion(from, to, value) {
         let num = Number(value);
         let newValue;
+        console.log(`Num: ${num}`)
         if (from === '%' && to === 'int') {
+            console.log('% to Int')
             newValue = Math.round(num * 2.55);
         }
         else if (from === 'int' && to === '%') {
+            console.log('Int to %')
             newValue = (num / 255) * 100
             //round to two decimals.
             newValue = Math.round((newValue + Number.EPSILON) * 100) / 100;
         }
+        console.log(`RoundsTo: ${newValue}`)
         return `${newValue}`;
     }
 
     function getStep(itemType){
         switch (itemType) {
             case '%':
-                return '0.25'
+                return 'any'
             default:
                 return '1'
         }
@@ -119,7 +125,7 @@ export default function PatternCreator() {
     function getMax(itemType){
         switch (itemType) {
             case '%':
-                return '100'
+                return '100.00'
             case 'int':
                 return '255'
             default:
@@ -130,7 +136,8 @@ export default function PatternCreator() {
     return (
         <main>
             <h2>Pattern Creator</h2>
-            <div>Code Text: {code}</div>
+            <div>Code Text: {code.primary}</div>
+            <div>Read Out: {code.readOut}</div>
             <form>
                 {(entry || []).map((item, index) => (
                     <>
