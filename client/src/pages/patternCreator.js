@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 export default function PatternCreator() {
+    const [code, setCode] = useState('');
     const [entry, setEntry] = useState([{
         type: 'speed',
         value: '0',
@@ -41,6 +42,7 @@ export default function PatternCreator() {
             newEntry[index] = ({ ...entry[index], value: value });
         }
         setEntry(newEntry);
+        setCode(generateCode());
         console.log(entry);
     }
 
@@ -54,8 +56,8 @@ export default function PatternCreator() {
         });
         newEntry.push({
             type: 'speed',
-            value: `${entry[entry.length-1].value}`,
-            unit: `${entry[entry.length-1].unit}`
+            value: `${entry[entry.length-3].value}`,
+            unit: `${entry[entry.length-3].unit}`
         });
         newEntry.push({
             type: 'duration',
@@ -64,6 +66,7 @@ export default function PatternCreator() {
         });
 
         setEntry(newEntry);
+        setCode(generateCode());
     }
 
     function generateCode() {
@@ -107,7 +110,7 @@ export default function PatternCreator() {
     function getStep(itemType){
         switch (itemType) {
             case '%':
-                return '0.01'
+                return '0.25'
             default:
                 return '1'
         }
@@ -127,11 +130,11 @@ export default function PatternCreator() {
     return (
         <main>
             <h2>Pattern Creator</h2>
-            <div>Code Text: {generateCode()}</div>
+            <div>Code Text: {code}</div>
             <form>
                 {(entry || []).map((item, index) => (
                     <>
-                    <input key={index} className={item.type} name={`${item.type}${index}`} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off'/>
+                    <input key={index} className={item.type} name={`${item.type}${index}`} value={item.value} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off'/>
                     <select key={`unit${index}`} name={`unit${index}`} onChange={handleChange} value={item.unit}>
                         {item.type === 'speed' ? <option key={`${index}UnitChoice1`} value='int'>Int</option> : <></>}
                         {item.type === 'speed' ? <option key={`${index}UnitChoice2`} value='%'>%</option> : <></>}
