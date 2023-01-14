@@ -72,22 +72,22 @@ export default function PatternCreator() {
     }
 
     function generateCode(list, extended=false) {
-        let newCode = '';
+        let newCode = extended ? 'Set the vibe to ': '';
         list.forEach(item => {
             let val = '';
             if (item.type === 'speed') {
-                val = `${item.value}`
+                val = extended ? `${item.value}` : `${item.value}`
                 if (item.unit !== 'int') {
                     val = extended ? `${item.value}%` : unitConversion(item.unit, 'int', item.value);
                 }
             }
             else if (item.type === 'duration') {
                 //Convert to seconds
-                val = `|${item.value}`
+                val = extended ? ` for a duration of ${item.value} seconds ` : `|${item.value}`
             }
             else if (item.type === 'transition') {
                 //Convert to seconds
-                val = `[${item.value}]`
+                val = extended ? `then gradually switch to the next speed over ${item.value} second(s). ` : `[${item.value}]`
             }
 
             newCode += val;
