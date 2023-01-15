@@ -33,7 +33,7 @@ export default function PatternCreator() {
         unit: 'sec'
     }]);
 
-    function handleChange(event){
+    function handleChange(event) {
         const { name, value } = event.target;
         let type = name.match(/(speed|duration|transition|unit)(?=[\d]+)/gm)[0];
         let index = name.match(/(?<=speed|duration|transition|unit)[\d]+/gm)[0];
@@ -47,10 +47,10 @@ export default function PatternCreator() {
             newEntry[index] = ({ ...entry[index], value: value });
         }
         setEntry(newEntry);
-        setCode({...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true)});
+        setCode({ ...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true) });
     }
 
-    function addSegment(event){
+    function addSegment(event) {
         event.preventDefault();
         let newEntry = entry;
         newEntry.push({
@@ -60,8 +60,8 @@ export default function PatternCreator() {
         });
         newEntry.push({
             type: 'speed',
-            value: `${entry[entry.length-3].value}`,
-            unit: `${entry[entry.length-3].unit}`
+            value: `${entry[entry.length - 3].value}`,
+            unit: `${entry[entry.length - 3].unit}`
         });
         newEntry.push({
             type: 'duration',
@@ -70,11 +70,24 @@ export default function PatternCreator() {
         });
 
         setEntry(newEntry);
-        setCode({...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true)});
+        setCode({ ...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true) });
     }
 
-    function generateCode(list, extended=false) {
-        let newCode = extended ? 'Set the vibe to ': '';
+    function removeSegment(event) {
+        event.preventDefault();
+        let newEntry = entry;
+        if (newEntry.length > 4) {
+            newEntry.pop();
+            newEntry.pop();
+            newEntry.pop();
+        }
+
+        setEntry(newEntry);
+        setCode({ ...code, primary: generateCode(newEntry), readOut: generateCode(newEntry, true) });
+    }
+
+    function generateCode(list, extended = false) {
+        let newCode = extended ? 'Set the vibe to ' : '';
         list.forEach(item => {
             let val = '';
             if (item.type === 'speed') {
@@ -115,7 +128,7 @@ export default function PatternCreator() {
         return `${newValue}`;
     }
 
-    function getStep(itemType){
+    function getStep(itemType) {
         switch (itemType) {
             case '%':
                 return 'any'
@@ -124,7 +137,7 @@ export default function PatternCreator() {
         }
     }
 
-    function getMax(itemType){
+    function getMax(itemType) {
         switch (itemType) {
             case '%':
                 return '100.00'
@@ -143,18 +156,19 @@ export default function PatternCreator() {
             <form>
                 {(entry || []).map((item, index) => (
                     <>
-                    <input key={index} className={item.type} name={`${item.type}${index}`} value={item.value} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off'/>
-                    <select key={`unit${index}`} name={`unit${index}`} onChange={handleChange} value={item.unit}>
-                        {item.type === 'speed' ? <option key={`${index}UnitChoice1`} value='int'>Int</option> : <></>}
-                        {item.type === 'speed' ? <option key={`${index}UnitChoice2`} value='%'>%</option> : <></>}
-                        {item.type === 'duration' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
-                        {item.type === 'transition' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
-                    </select>
+                        <input key={index} className={item.type} name={`${item.type}${index}`} value={item.value} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off' />
+                        <select key={`unit${index}`} name={`unit${index}`} onChange={handleChange} value={item.unit}>
+                            {item.type === 'speed' ? <option key={`${index}UnitChoice1`} value='int'>Int</option> : <></>}
+                            {item.type === 'speed' ? <option key={`${index}UnitChoice2`} value='%'>%</option> : <></>}
+                            {item.type === 'duration' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
+                            {item.type === 'transition' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
+                        </select>
                     </>
                 ))}
                 <button onClick={addSegment}>+</button>
+                <button onClick={removeSegment}>-</button>
             </form>
-            <PatternGraph entries={entry}/>
+            <PatternGraph entries={entry} />
         </main>
     );
 }
