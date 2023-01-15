@@ -3,6 +3,12 @@ import PatternGraph from '../components/patternGraph';
 
 
 export default function PatternCreator() {
+    const [play, setPlay] = useState(false);
+
+    const togglePlay = () => {
+        setPlay(!play)
+    }
+
     const [code, setCode] = useState({
         primary: '',
         readOut: ''
@@ -173,7 +179,8 @@ export default function PatternCreator() {
                     <button className='rmvBtn' onClick={removeSegment}>-</button>
                 </div>
             </form>
-            <PatternGraph entries={entry} />
+            <PatternGraph entries={entry} play={play} />
+            {!play ? <button className='playBtn' onClick={togglePlay}>&#9658;</button> : <button className='playBtn' onClick={togglePlay}>&#11035;</button>}
         </main>
     );
 }

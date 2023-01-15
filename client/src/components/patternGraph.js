@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 
 export default function PatternGraph(props) {
-    console.log(props);
+    //console.log(props);
     const chartRef = useRef(null);
     
     useEffect(() => {
@@ -77,6 +77,8 @@ export default function PatternGraph(props) {
             dataArray.push({ x: seconds, y: speed });
         }
 
+        document.documentElement.style.setProperty('--patternLength', `${seconds}s`);
+
         const newData = {
             //labels: dataArray.map(row => row.x),
             datasets: [{
@@ -120,6 +122,7 @@ export default function PatternGraph(props) {
     return (
         <div className='chart-container'>
             <Line ref={chartRef} options={options} data={readData() ?? data} />
+            <div id='timeIndicator' className={props.play ? 'playing' : 'notPlaying'}></div>
         </div>
     );
 }
