@@ -6,12 +6,12 @@ export default function PatternGraph(props) {
     const chartRef = useRef(null);
     
     useEffect(() => {
-        const chart = chartRef.current;
+        //const chart = chartRef.current;
 
-        if (chart) {
-            console.log('CanvasRenderingContext2D', chart.ctx);
-            console.log('HTMLCanvasElement', chart.canvas);
-        }
+        // if (chart) {
+        //     console.log('CanvasRenderingContext2D', chart.ctx);
+        //     console.log('HTMLCanvasElement', chart.canvas);
+        // }
     }, []);
 
     const options = {
@@ -29,7 +29,11 @@ export default function PatternGraph(props) {
             x: {
                 type: 'linear',
                 axis: 'x',
-                min: 0
+                min: 0, 
+                ticks: {
+                    includeBounds: true,
+                    stepSize: 1
+                }
             }
         },
         elements: {

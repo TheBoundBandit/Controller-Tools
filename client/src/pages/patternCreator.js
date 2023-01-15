@@ -139,7 +139,7 @@ export default function PatternCreator() {
         <main>
             <h2>Pattern Creator</h2>
             <div>Code Text: {code.primary}</div>
-            <div>Read Out: {code.readOut}</div>
+            {/* <div>Read Out: {code.readOut}</div> */}
             <form>
                 {(entry || []).map((item, index) => (
                     <>

@@ -30,11 +30,20 @@ input.speed[step='any']{
   max-width: 55px;
 }
 
+.transition+select{
+  margin-right: 0.66rem;
+}
+
+.duration+select{
+  margin-right: 0.66rem;
+}
+
 .chart-container{
-  width: 100%;
-  height: 10%;
+  margin: auto;
+  width: 90%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .chart-container canvas{
