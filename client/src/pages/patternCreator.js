@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PatternGraph from '../components/patternGraph';
+
 
 export default function PatternCreator() {
     const [code, setCode] = useState({
@@ -22,7 +24,7 @@ export default function PatternCreator() {
     },
     {
         type: 'speed',
-        value: '0',
+        value: '5',
         unit: '%'
     },
     {
@@ -152,6 +154,7 @@ export default function PatternCreator() {
                 ))}
                 <button onClick={addSegment}>+</button>
             </form>
+            <PatternGraph entries={entry}/>
         </main>
     );
 }
