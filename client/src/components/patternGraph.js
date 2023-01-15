@@ -16,16 +16,17 @@ export default function PatternGraph(props) {
 
     const options = {
         scales: {
-            speed: {
+            y: {
                 type: 'linear',
                 axis: 'y',
                 min: 0,
                 max: 255,
                 ticks: {
+                    includeBounds: true,
                     stepSize: 5
                 }
             },
-            time: {
+            x: {
                 type: 'linear',
                 axis: 'x',
                 min: 0
@@ -33,7 +34,7 @@ export default function PatternGraph(props) {
         },
         elements: {
             line: {
-                tension: 0.4
+                tension: 0.2
             }
         }
     }
@@ -43,11 +44,9 @@ export default function PatternGraph(props) {
         datasets: [{
             label: 'Speed',
             data: [],
-            //borderColor: generateGradient(chartRef.current.ctx, chartRef.current.chartArea),
-            //backGroundColor:  generateGradient(chartRef.current.ctx, chartRef.current.chartArea, true),
-            fill: 'start',
-            //pointStyle: 'circle'
-            borderWidth: 1
+            borderColor: chartRef.current ? generateGradient(chartRef.current.ctx, chartRef.current.chartArea) : 'rgb(54, 162, 235)',
+            backgroundColor:  chartRef.current ? generateGradient(chartRef.current.ctx, chartRef.current.chartArea, true) : 'rgb(54, 162, 235, 0.5)',
+            borderWidth: 2
         }]
     }
 
@@ -80,10 +79,10 @@ export default function PatternGraph(props) {
                 label: 'Speed',
                 data: dataArray,
                 borderColor: chartRef.current ? generateGradient(chartRef.current.ctx, chartRef.current.chartArea) : 'rgb(54, 162, 235)',
-                backGroundColor:  chartRef.current ? generateGradient(chartRef.current.ctx, chartRef.current.chartArea, true) : 'rgb(54, 162, 235, 0.5)',
+                backgroundColor:  chartRef.current ? generateGradient(chartRef.current.ctx, chartRef.current.chartArea, true) : 'rgb(54, 162, 235, 0.5)',
                 fill: 'start',
                 //pointStyle: 'circle'
-                borderWidth: 1
+                borderWidth: 2
             }]
         }
         //console.log(dataArray);
@@ -100,7 +99,6 @@ export default function PatternGraph(props) {
             width = chartWidth;
             height = chartHeight;
             gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-            gradient = ctx.createLinearGradient(0, 1000, 0, 300);
             if (transparent) {
                 gradient.addColorStop(0, 'rgb(54, 162, 235, 0.5)');
                 gradient.addColorStop(0.5, 'rgb(255, 205, 86, 0.5)');
