@@ -76,7 +76,7 @@ export default function PatternCreator() {
     function removeSegment(event) {
         event.preventDefault();
         let newEntry = entry;
-        if (newEntry.length > 4) {
+        if (newEntry.length > 5) {
             newEntry.pop();
             newEntry.pop();
             newEntry.pop();
@@ -155,18 +155,23 @@ export default function PatternCreator() {
             {/* <div>Read Out: {code.readOut}</div> */}
             <form>
                 {(entry || []).map((item, index) => (
-                    <>
-                        <input key={index} className={item.type} name={`${item.type}${index}`} value={item.value} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off' />
+                    <div key={index} className={`${item.type}-container input-container`}>
+                        {item.type === 'speed' ? <div className='label'> Speed </div> : <></>}
+                        {item.type === 'duration' ? <div className='label'> Duration </div> : <></>}
+                        {item.type === 'transition' ? <div className='label'> Transition </div> : <></>}
+                        <input key={`value${index}`} className={item.type} name={`${item.type}${index}`} value={item.value} type='number' min='0' max={getMax(item.unit)} step={getStep(item.unit)} onChange={handleChange} autoComplete='off' />
                         <select key={`unit${index}`} name={`unit${index}`} onChange={handleChange} value={item.unit}>
                             {item.type === 'speed' ? <option key={`${index}UnitChoice1`} value='int'>Int</option> : <></>}
                             {item.type === 'speed' ? <option key={`${index}UnitChoice2`} value='%'>%</option> : <></>}
                             {item.type === 'duration' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
                             {item.type === 'transition' ? <option key={`${index}UnitChoice1`} value='sec'>Sec</option> : <></>}
                         </select>
-                    </>
+                    </div>
                 ))}
-                <button onClick={addSegment}>+</button>
-                <button onClick={removeSegment}>-</button>
+                <div className='btnGroup-vert'>
+                    <button className='addBtn'onClick={addSegment}>+</button>
+                    <button className='rmvBtn' onClick={removeSegment}>-</button>
+                </div>
             </form>
             <PatternGraph entries={entry} />
         </main>
